@@ -93,23 +93,10 @@ int scp_sbi_open(void)
         ogs_sbi_subscription_spec_add(OpenAPI_nf_type_UDR, NULL);
     }
 
-    if (ogs_sbi_server_start_all(request_handler) == OGS_OK){
-              
-            int producer_id = 4;  // Assign a unique integer ID for each NF
-            int consumer_id = 5;  // Assign a unique integer ID for each NF
+    if (ogs_sbi_server_start_all(request_handler) != OGS_OK)
+            return OGS_ERROR;
 
-            vector_clock_update(scp_self()->vector_clocks[producer_id], producer_id, scp_self()->vector_clocks[consumer_id]->clocks);
-            vector_clock_update(scp_self()->vector_clocks[consumer_id], consumer_id, scp_self()->vector_clocks[producer_id]->clocks);
-
-            // Print vector clocks for debugging
-            vector_clock_print(scp_self()->vector_clocks[producer_id], producer_id);
-            vector_clock_print(scp_self()->vector_clocks[consumer_id], consumer_id);
-
-            return OGS_OK;
-        
-    }
-
-    return OGS_ERROR;
+    return OGS_OK;
 }
 
 void scp_sbi_close(void)
@@ -701,6 +688,17 @@ static int response_handler(
         return OGS_ERROR;
     }
     ogs_expect(true == ogs_sbi_server_send_response(stream, response));
+
+   
+    int producer_id = assoc->nf_service_producer;  // Assign a unique integer ID for each NF
+    int consumer_id = assoc->client;  // Assign a unique integer ID for each NF
+
+    vector_clock_update(scp_self()->vector_clocks[producer_id], producer_id, scp_self()->vector_clocks[consumer_id]->clocks);
+    vector_clock_update(scp_self()->vector_clocks[consumer_id], consumer_id, scp_self()->vector_clocks[producer_id]->clocks);
+
+    // Print vector clocks for debugging
+    vector_clock_print(scp_self()->vector_clocks[producer_id], producer_id);
+    vector_clock_print(scp_self()->vector_clocks[consumer_id], consumer_id);
 
 
     return OGS_OK;
