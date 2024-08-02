@@ -41,6 +41,9 @@ static void copy_request(
         ogs_sbi_request_t *target, ogs_sbi_request_t *source,
         bool do_not_remove_custom_header);
 
+int producer_scp;
+int consumer_scp;
+
 int scp_sbi_open(void)
 {
     ogs_sbi_nf_instance_t *nf_instance = NULL, *nrf_instance = NULL;
