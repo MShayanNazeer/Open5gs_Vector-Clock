@@ -690,8 +690,8 @@ static int response_handler(
     ogs_expect(true == ogs_sbi_server_send_response(stream, response));
 
    
-    int producer_id = assoc->nf_service_producer;  // Assign a unique integer ID for each NF
-    int consumer_id = assoc->client;  // Assign a unique integer ID for each NF
+    int producer_id = 1;  // Assign a unique integer ID for each NF
+    int consumer_id = 2;  // Assign a unique integer ID for each NF
 
     vector_clock_update(scp_self()->vector_clocks[producer_id], producer_id, scp_self()->vector_clocks[consumer_id]->clocks);
     vector_clock_update(scp_self()->vector_clocks[consumer_id], consumer_id, scp_self()->vector_clocks[producer_id]->clocks);
