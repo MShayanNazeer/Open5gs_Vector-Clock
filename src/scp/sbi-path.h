@@ -27,6 +27,8 @@
 extern "C" {
 #endif
 
+int producer;
+int consumer;
 int scp_sbi_open(void);
 void scp_sbi_close(void);
 
