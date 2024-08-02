@@ -316,8 +316,8 @@ static int request_handler(ogs_sbi_request_t *request, void *data)
 
         
     }
-    producer = target_nf_type;
-    consumer = requester_nf_type;
+    producer_scp = target_nf_type;
+    consumer_scp4 = requester_nf_type;
 
     /**************************************
      * Send REQUEST message to the Next-SCP
@@ -690,8 +690,8 @@ static int response_handler(
     ogs_expect(true == ogs_sbi_server_send_response(stream, response));
 
    
-    int producer_id = producer;  // Assign a unique integer ID for each NF
-    int consumer_id = consumer;  // Assign a unique integer ID for each NF
+    int producer_id = producer_scp;  // Assign a unique integer ID for each NF
+    int consumer_id = consumer_scp;  // Assign a unique integer ID for each NF
 
     vector_clock_update(scp_self()->vector_clocks[producer_id], producer_id, scp_self()->vector_clocks[consumer_id]->clocks);
     vector_clock_update(scp_self()->vector_clocks[consumer_id], consumer_id, scp_self()->vector_clocks[producer_id]->clocks);
