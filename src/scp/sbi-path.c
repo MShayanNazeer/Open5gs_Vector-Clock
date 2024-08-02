@@ -332,8 +332,7 @@ static int request_handler(ogs_sbi_request_t *request, void *data)
             return OGS_ERROR;
         }
 
-        // Update the vector clock here using requester_nf_type and target_nf_type
-        if (discovery_presence) {
+        if (discovery_presence && requester_nf_type != OpenAPI_nf_type_NULL && target_nf_type != OpenAPI_nf_type_NULL) {
             int producer_id = requester_nf_type;  // Assign a unique integer ID for each NF
             int consumer_id = target_nf_type;  // Assign a unique integer ID for each NF
 
@@ -465,8 +464,7 @@ static int request_handler(ogs_sbi_request_t *request, void *data)
             return OGS_ERROR;
         }
 
-        // Update the vector clock here using requester_nf_type and target_nf_type
-        if (discovery_presence) {
+        if (discovery_presence && requester_nf_type != OpenAPI_nf_type_NULL && target_nf_type != OpenAPI_nf_type_NULL) {
             int producer_id = requester_nf_type;  // Assign a unique integer ID for each NF
             int consumer_id = target_nf_type;  // Assign a unique integer ID for each NF
 
