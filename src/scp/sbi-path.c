@@ -319,8 +319,8 @@ static int request_handler(ogs_sbi_request_t *request, void *data)
 
         
     }
-    producer_scp = target_nf_type;
-    consumer_scp = requester_nf_type;
+    producer_scp = 1;
+    consumer_scp = 2;
 
     /**************************************
      * Send REQUEST message to the Next-SCP
