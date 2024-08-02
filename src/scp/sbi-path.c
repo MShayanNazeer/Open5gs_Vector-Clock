@@ -633,6 +633,9 @@ static int request_handler(ogs_sbi_request_t *request, void *data)
     int producer_id = requester_nf_type;  // Assign a unique integer ID for each NF
     int consumer_id = target_nf_type;  // Assign a unique integer ID for each NF
 
+    printf("%s", OpenAPI_nf_type_FromString(requester_nf_type));
+    printf("%s", OpenAPI_nf_type_FromString(target_nf_type));
+
     vector_clock_update(scp_self()->vector_clocks[producer_id], producer_id, scp_self()->vector_clocks[consumer_id]->clocks);
     vector_clock_update(scp_self()->vector_clocks[consumer_id], consumer_id, scp_self()->vector_clocks[producer_id]->clocks);
 
