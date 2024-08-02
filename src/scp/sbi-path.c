@@ -279,18 +279,7 @@ static int request_handler(ogs_sbi_request_t *request, void *data)
     }
 
     if (target_nf_type || service_type) {
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-         // Update the vector clock here using requester_nf_type and target_nf_type
-        int producer_id = requester_nf_type;  // Assign a unique integer ID for each NF
-        int consumer_id = target_nf_type;  // Assign a unique integer ID for each NF
 
-        vector_clock_update(scp_self()->vector_clocks[producer_id], producer_id, scp_self()->vector_clocks[consumer_id]->clocks);
-        vector_clock_update(scp_self()->vector_clocks[consumer_id], consumer_id, scp_self()->vector_clocks[producer_id]->clocks);
-
-        // Print vector clocks for debugging
-        vector_clock_print(scp_self()->vector_clocks[producer_id], producer_id);
-        vector_clock_print(scp_self()->vector_clocks[consumer_id], consumer_id);
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         if (!target_nf_type || !service_type) {
             ogs_error("[%s] No Mandatory Discovery [%d:%d]",
@@ -322,6 +311,8 @@ static int request_handler(ogs_sbi_request_t *request, void *data)
         }
 
         discovery_presence = true;
+
+        
     }
 
     /**************************************
@@ -637,6 +628,19 @@ static int request_handler(ogs_sbi_request_t *request, void *data)
         return OGS_ERROR;
     }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Update the vector clock here using requester_nf_type and target_nf_type
+    int producer_id = requester_nf_type;  // Assign a unique integer ID for each NF
+    int consumer_id = target_nf_type;  // Assign a unique integer ID for each NF
+
+    vector_clock_update(scp_self()->vector_clocks[producer_id], producer_id, scp_self()->vector_clocks[consumer_id]->clocks);
+    vector_clock_update(scp_self()->vector_clocks[consumer_id], consumer_id, scp_self()->vector_clocks[producer_id]->clocks);
+
+    // Print vector clocks for debugging
+    vector_clock_print(scp_self()->vector_clocks[producer_id], producer_id);
+    vector_clock_print(scp_self()->vector_clocks[consumer_id], consumer_id);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     return OGS_OK;
 }
 
@@ -683,6 +687,15 @@ static int response_handler(
             ogs_error("No NF-Instance ID");
     }
 
+
+    scp_assoc_remove(assoc);
+
+    if (!stream) {
+        ogs_error("STREAM has already been removed [%d]", stream_id);
+        return OGS_ERROR;
+    }
+    ogs_expect(true == ogs_sbi_server_send_response(stream, response));
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Update the vector clock here using the producer and consumer
     int producer_id = assoc->requester_nf_type;  // Assign a unique integer ID for each NF
@@ -695,13 +708,6 @@ static int response_handler(
     vector_clock_print(scp_self()->vector_clocks[producer_id], producer_id);
     vector_clock_print(scp_self()->vector_clocks[consumer_id], consumer_id);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    scp_assoc_remove(assoc);
-
-    if (!stream) {
-        ogs_error("STREAM has already been removed [%d]", stream_id);
-        return OGS_ERROR;
-    }
-    ogs_expect(true == ogs_sbi_server_send_response(stream, response));
 
     return OGS_OK;
 }
