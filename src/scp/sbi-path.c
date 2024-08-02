@@ -18,6 +18,7 @@
  */
 
 #include "sbi-path.h"
+#include "vector_clock.h" 
 
 static int request_handler(ogs_sbi_request_t *request, void *data);
 static int response_handler(
@@ -278,6 +279,19 @@ static int request_handler(ogs_sbi_request_t *request, void *data)
     }
 
     if (target_nf_type || service_type) {
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+         // Update the vector clock here using requester_nf_type and target_nf_type
+        int producer_id = requester_nf_type;  // Assign a unique integer ID for each NF
+        int consumer_id = target_nf_type;  // Assign a unique integer ID for each NF
+
+        vector_clock_update(scp_self()->vector_clocks[producer_id], producer_id, scp_self()->vector_clocks[consumer_id]->clocks);
+        vector_clock_update(scp_self()->vector_clocks[consumer_id], consumer_id, scp_self()->vector_clocks[producer_id]->clocks);
+
+        // Print vector clocks for debugging
+        vector_clock_print(scp_self()->vector_clocks[producer_id], producer_id);
+        vector_clock_print(scp_self()->vector_clocks[consumer_id], consumer_id);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         if (!target_nf_type || !service_type) {
             ogs_error("[%s] No Mandatory Discovery [%d:%d]",
                 request->h.uri, target_nf_type, service_type);
@@ -669,6 +683,18 @@ static int response_handler(
             ogs_error("No NF-Instance ID");
     }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Update the vector clock here using the producer and consumer
+    int producer_id = assoc->requester_nf_type;  // Assign a unique integer ID for each NF
+    int consumer_id = assoc->target_nf_type;  // Assign a unique integer ID for each NF
+
+    vector_clock_update(scp_self()->vector_clocks[producer_id], producer_id, scp_self()->vector_clocks[consumer_id]->clocks);
+    vector_clock_update(scp_self()->vector_clocks[consumer_id], consumer_id, scp_self()->vector_clocks[producer_id]->clocks);
+
+    // Print vector clocks for debugging
+    vector_clock_print(scp_self()->vector_clocks[producer_id], producer_id);
+    vector_clock_print(scp_self()->vector_clocks[consumer_id], consumer_id);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     scp_assoc_remove(assoc);
 
     if (!stream) {

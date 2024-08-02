@@ -25,6 +25,8 @@
 
 #include "scp-sm.h"
 
+#include "vector_clock.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -36,6 +38,7 @@ extern int __scp_log_domain;
 
 typedef struct scp_context_s {
     ogs_list_t          assoc_list;
+    vector_clock_t *vector_clocks[NUM_NODES];
 } scp_context_t;
 
 typedef struct scp_assoc_s scp_assoc_t;
