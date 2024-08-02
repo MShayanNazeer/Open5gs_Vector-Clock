@@ -704,8 +704,8 @@ static int response_handler(
     int producer_id = assoc->requester_nf_type;  // Assign a unique integer ID for each NF
     int consumer_id = assoc->target_nf_type;  // Assign a unique integer ID for each NF
 
-    printf("%s", OpenAPI_nf_type_ToString(requester_nf_type));
-    printf("%s", OpenAPI_nf_type_ToString(target_nf_type));
+    printf("%s", OpenAPI_nf_type_ToString(producer_id));
+    printf("%s", OpenAPI_nf_type_ToString(consumer_id));
 
     vector_clock_update(scp_self()->vector_clocks[producer_id], producer_id, scp_self()->vector_clocks[consumer_id]->clocks);
     vector_clock_update(scp_self()->vector_clocks[consumer_id], consumer_id, scp_self()->vector_clocks[producer_id]->clocks);
