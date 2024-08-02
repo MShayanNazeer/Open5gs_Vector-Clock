@@ -16,6 +16,7 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 libscp_sources = files('''
+    vector_clock.c
     context.c
     event.c
 

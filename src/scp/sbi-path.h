@@ -21,6 +21,7 @@
 #define SCP_SBI_PATH_H
 
 #include "context.h"
+#include "vector_clock.h" 
 
 #ifdef __cplusplus
 extern "C" {

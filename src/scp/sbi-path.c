@@ -18,7 +18,7 @@
  */
 
 #include "sbi-path.h"
-#include "vector_clock.h" 
+
 
 static int request_handler(ogs_sbi_request_t *request, void *data);
 static int response_handler(
