@@ -123,6 +123,8 @@ static int request_handler(ogs_sbi_request_t *request, void *data)
     scp_assoc_t *assoc = NULL;
     ogs_sbi_nf_instance_t *nf_instance = NULL;
 
+
+
     struct {
         char *target_apiroot;
         char *callback;
@@ -278,6 +280,10 @@ static int request_handler(ogs_sbi_request_t *request, void *data)
         return OGS_ERROR;
     }
 
+    // Update the vector clock here using requester_nf_type and target_nf_type
+    int producer_id = requester_nf_type;  // Assign a unique integer ID for each NF
+    int consumer_id = target_nf_type;  // Assign a unique integer ID for each NF
+
     if (target_nf_type || service_type) {
 
 
@@ -327,6 +333,9 @@ static int request_handler(ogs_sbi_request_t *request, void *data)
             scp_assoc_remove(assoc);
             return OGS_ERROR;
         }
+
+        vector_clock_update(scp_self()->vector_clocks[producer_id], producer_id, scp_self()->vector_clocks[consumer_id]->clocks);
+        vector_clock_update(scp_self()->vector_clocks[consumer_id], consumer_id, scp_self()->vector_clocks[producer_id]->clocks);
 
         return OGS_OK;
     }
@@ -447,6 +456,9 @@ static int request_handler(ogs_sbi_request_t *request, void *data)
             scp_assoc_remove(assoc);
             return OGS_ERROR;
         }
+
+        vector_clock_update(scp_self()->vector_clocks[producer_id], producer_id, scp_self()->vector_clocks[consumer_id]->clocks);
+        vector_clock_update(scp_self()->vector_clocks[consumer_id], consumer_id, scp_self()->vector_clocks[producer_id]->clocks);
 
         return OGS_OK;
     }
@@ -603,6 +615,9 @@ static int request_handler(ogs_sbi_request_t *request, void *data)
             return OGS_ERROR;
         }
 
+        vector_clock_update(scp_self()->vector_clocks[producer_id], producer_id, scp_self()->vector_clocks[consumer_id]->clocks);
+        vector_clock_update(scp_self()->vector_clocks[consumer_id], consumer_id, scp_self()->vector_clocks[producer_id]->clocks);
+
         return OGS_OK;
     }
 
@@ -628,16 +643,16 @@ static int request_handler(ogs_sbi_request_t *request, void *data)
         return OGS_ERROR;
     }
 
+    vector_clock_update(scp_self()->vector_clocks[producer_id], producer_id, scp_self()->vector_clocks[consumer_id]->clocks);
+    vector_clock_update(scp_self()->vector_clocks[consumer_id], consumer_id, scp_self()->vector_clocks[producer_id]->clocks);    
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Update the vector clock here using requester_nf_type and target_nf_type
-    int producer_id = requester_nf_type;  // Assign a unique integer ID for each NF
-    int consumer_id = target_nf_type;  // Assign a unique integer ID for each NF
+
 
     printf("%s", OpenAPI_nf_type_ToString(requester_nf_type));
     printf("%s", OpenAPI_nf_type_ToString(target_nf_type));
 
-    vector_clock_update(scp_self()->vector_clocks[producer_id], producer_id, scp_self()->vector_clocks[consumer_id]->clocks);
-    vector_clock_update(scp_self()->vector_clocks[consumer_id], consumer_id, scp_self()->vector_clocks[producer_id]->clocks);
+
 
     // Print vector clocks for debugging
     vector_clock_print(scp_self()->vector_clocks[producer_id], producer_id);
