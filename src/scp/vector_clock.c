@@ -7,7 +7,8 @@ const char *nf_typeArray[] =  { "NULL", "NRF", "UDM", "AMF", "SMF", "AUSF", "NEF
 node_clock_map_t nf_clock_dicttionary[NUM_NODES];
 
 static int get_node_id(const char *node_name) {
-    for (int i = 0; i < NUM_NODES; i++) {
+    int i;
+    for (i = 0; i < NUM_NODES; i++) {
         if (strcmp(node_name, nf_typeArray[i]) == 0) {
             return i;
         }
