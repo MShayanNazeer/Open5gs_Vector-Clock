@@ -17,7 +17,7 @@ typedef struct {
     vector_clock_t vector_clock;
 } node_clock_map_t;
 
-vector_clock_t *vector_clock_create();
+vector_clock_t *vector_clock_create(void);
 void vector_clock_destroy(vector_clock_t *vc);
 static int get_node_id(const char *node_name);
 node_clock_map_t *get_node_clock(const char *node_name);
