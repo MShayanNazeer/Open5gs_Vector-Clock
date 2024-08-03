@@ -322,6 +322,9 @@ static int request_handler(ogs_sbi_request_t *request, void *data)
     producer_scp = 1;
     consumer_scp = 2;
 
+    printf("Sender NF Type: %s\n", OpenAPI_nf_type_ToString(requester_nf_type));
+    printf("Receiver NF Type: %s\n", OpenAPI_nf_type_ToString(target_nf_type));
+
     /**************************************
      * Send REQUEST message to the Next-SCP
      **************************************/
