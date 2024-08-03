@@ -3,8 +3,6 @@
 
 const char *nf_typeArray[] =  { "NULL", "NRF", "UDM", "AMF", "SMF", "AUSF", "NEF", "PCF", "NSSF", "UDR", "LMF", "SEPP", "UPF", "N3IWF", "AF", "UDSF", "BSF", "CHF", "NWDAF", "PCSCF", "HSS", "UCMF", "MME", "SCP"};
 
-node_clock_map_t nf_clock_dictionary[NUM_NODES];
-
 static int get_node_id(const char *node_name) {
     int i;
     for (i = 0; i < NUM_NODES; i++) {
@@ -34,20 +32,21 @@ node_clock_map_t *get_node_clock(const char *node_name) {
         s->node_id = get_node_id(node_name);
         s->vector_clock = *vector_clock_create();
         
-        nf_clock_dictionary[s->node_id].node_id = get_node_id(node_name); 
-        memcpy(*nf_clock_dictionary[s->node_id].node_name, node_name, sizeof(node_name)-1);
-        // nf_clock_dictionary[s->node_id].vector_clock= s->vector_clock;
-        // memcpy(*nf_clock_dictionary[s->node_id].vector_clock, s->vector_clock, sizeof(vector_clock_t));
+    }
 
-        int i;
+    
+    nf.node_name = node_name;
+    nf.node_id = get_node_id(node_name);
+    
+    int i;
         for (i = 0; i < NUM_NODES; i++)
         {
+            vector_clock_map_t 
             int *temp = nf_clock_dictionary[s->node_id].vector_clock;
             int *temp2 = s->vector_clock;
             temp[i] = temp2[i]; 
         }
-        
-    }
+
     return s;
 }
 
