@@ -9,7 +9,9 @@ const char *nf_typeArray[] =  {
 };
 
 static int get_node_id(const char *node_name) {
-    for (int i = 0; i < NUM_NODES; i++) {
+    
+    int i;
+    for (i = 0; i < NUM_NODES; i++) {
         if (strcmp(node_name, nf_typeArray[i]) == 0) {
             return i;
         }
@@ -58,7 +60,8 @@ void vector_clock_update(const char *sender, const char *receiver) {
     sender_clock->vector_clock.clocks[sender_clock->node_id]++;
     receiver_clock->vector_clock.clocks[receiver_clock->node_id]++;    
 
-    for (int i = 0; i < NUM_NODES; i++) {
+    int i;
+    for (i = 0; i < NUM_NODES; i++) {
         if (sender_clock->vector_clock.clocks[i] < receiver_clock->vector_clock.clocks[i]) {
             sender_clock->vector_clock.clocks[i] = receiver_clock->vector_clock.clocks[i];
         }
@@ -66,7 +69,9 @@ void vector_clock_update(const char *sender, const char *receiver) {
 }
 
 void vector_clock_merge(int *clock1, int *clock2) {
-    for (int i = 0; i < NUM_NODES; i++) {
+    
+    int i;
+    for (i = 0; i < NUM_NODES; i++) {
         if (clock1[i] < clock2[i]) {
             clock1[i] = clock2[i];
         }
@@ -77,7 +82,9 @@ void print_vector_clock(const char *node_name) {
     node_clock_map_t *node_clock = get_node_clock(node_name);
     if (node_clock) {
         printf("Vector Clock for node %s:\n", node_clock->node_name);
-        for (int j = 0; j < NUM_NODES; j++) {
+        
+        int j;
+        for (j = 0; j < NUM_NODES; j++) {
             printf("%d ", node_clock->vector_clock.clocks[j]);
         }
         printf("\n");
@@ -86,12 +93,3 @@ void print_vector_clock(const char *node_name) {
     }
 }
 
-int main() {
-    vector_clock_update("AMF", "SMF");
-    vector_clock_update("SMF", "AMF");
-
-    print_vector_clock("AMF");
-    print_vector_clock("SMF");
-
-    return 0;
-}
