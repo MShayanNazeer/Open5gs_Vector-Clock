@@ -323,7 +323,7 @@ static int request_handler(ogs_sbi_request_t *request, void *data)
     char *consumer_scp = OpenAPI_nf_type_ToString(requester_nf_type);
 
 
-    vector_clock_update(scp_self()->vector_clocks[producer_id], producer_id, scp_self()->vector_clocks[consumer_id]->clocks);
+    vector_clock_update(consumer_scp, producer_scp);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

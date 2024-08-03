@@ -7,7 +7,7 @@
 #include <uthash.h>
 
 
-#define NUM_NODES 24  // Adjust this to the number of network functions
+#define NUM_NODES   // Adjust this to the number of network functions
 
 typedef struct {
     int clocks[MAX_NODES];
