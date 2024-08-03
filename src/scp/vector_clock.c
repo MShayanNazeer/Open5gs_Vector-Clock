@@ -33,20 +33,6 @@ node_clock_map_t *get_node_clock(const char *node_name) {
         s->vector_clock = *vector_clock_create();
         
     }
-
-    
-    nf.node_name = node_name;
-    nf.node_id = get_node_id(node_name);
-    
-    int i;
-        for (i = 0; i < NUM_NODES; i++)
-        {
-            vector_clock_map_t 
-            int *temp = nf_clock_dictionary[s->node_id].vector_clock;
-            int *temp2 = s->vector_clock;
-            temp[i] = temp2[i]; 
-        }
-
     return s;
 }
 
