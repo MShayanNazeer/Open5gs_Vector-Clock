@@ -41,8 +41,6 @@ static void copy_request(
         ogs_sbi_request_t *target, ogs_sbi_request_t *source,
         bool do_not_remove_custom_header);
 
-int producer_scp;
-int consumer_scp;
 
 int scp_sbi_open(void)
 {
@@ -319,11 +317,16 @@ static int request_handler(ogs_sbi_request_t *request, void *data)
 
         
     }
-    producer_scp = 1;
-    consumer_scp = 2;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    printf("Sender NF Type: %s\n", OpenAPI_nf_type_ToString(requester_nf_type));
-    printf("Receiver NF Type: %s\n", OpenAPI_nf_type_ToString(target_nf_type));
+    char *producer_scp = OpenAPI_nf_type_ToString(target_nf_type);
+    char *consumer_scp = OpenAPI_nf_type_ToString(requester_nf_type);
+
+
+    vector_clock_update(scp_self()->vector_clocks[producer_id], producer_id, scp_self()->vector_clocks[consumer_id]->clocks);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     /**************************************
      * Send REQUEST message to the Next-SCP
@@ -694,18 +697,6 @@ static int response_handler(
         return OGS_ERROR;
     }
     ogs_expect(true == ogs_sbi_server_send_response(stream, response));
-
-   
-    int producer_id = producer_scp;  // Assign a unique integer ID for each NF
-    int consumer_id = consumer_scp;  // Assign a unique integer ID for each NF
-
-    vector_clock_update(scp_self()->vector_clocks[producer_id], producer_id, scp_self()->vector_clocks[consumer_id]->clocks);
-    vector_clock_update(scp_self()->vector_clocks[consumer_id], consumer_id, scp_self()->vector_clocks[producer_id]->clocks);
-
-    // Print vector clocks for debugging
-    vector_clock_print(scp_self()->vector_clocks[producer_id], producer_id);
-    vector_clock_print(scp_self()->vector_clocks[consumer_id], consumer_id);
-
 
     return OGS_OK;
 }

@@ -4,17 +4,25 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <uthash.h>
 
-#define NUM_NODES 10  // Adjust this to the number of network functions
 
-typedef struct vector_clock {
-    int clocks[NUM_NODES];
+#define NUM_NODES 24  // Adjust this to the number of network functions
+
+typedef struct {
+    int clocks[MAX_NODES];
 } vector_clock_t;
 
-vector_clock_t* vector_clock_create(void);
-void vector_clock_destroy(vector_clock_t *vc);
-void vector_clock_update(vector_clock_t *vc, int node_id, int *other_clock);
-void vector_clock_print(const vector_clock_t *vc, int node_id);
-void vector_clock_merge(int *vc1, int *vc2);
+typedef struct {
+    char node_name[50];
+    int node_id;
+    vector_clock_t vector_clock;
+    UT_hash_handle hh;
+} node_clock_map_t;
+
+vector_clock_t *vector_clock_create();
+static int get_node_id(const char *node_name);
+node_clock_map_t *get_node_clock(const char *node_name);
+void vector_clock_update(const char *sender, const char *receiver);
 
 #endif // VECTOR_CLOCK_H
