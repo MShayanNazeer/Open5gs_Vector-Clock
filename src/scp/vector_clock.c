@@ -1,10 +1,9 @@
 #include "vector_clock.h"
 
-static node_clock_map_t *node_clock_map = NULL;
 
 const char *nf_typeArray[] =  { "NULL", "NRF", "UDM", "AMF", "SMF", "AUSF", "NEF", "PCF", "NSSF", "UDR", "LMF", "SEPP", "UPF", "N3IWF", "AF", "UDSF", "BSF", "CHF", "NWDAF", "PCSCF", "HSS", "UCMF", "MME", "SCP"};
 
-node_clock_map_t nf_clock_dicttionary[NUM_NODES];
+node_clock_map_t nf_clock_dictionary[NUM_NODES];
 
 static int get_node_id(const char *node_name) {
     int i;
@@ -34,7 +33,9 @@ node_clock_map_t *get_node_clock(const char *node_name) {
         s->node_name[sizeof(s->node_name) - 1] = '\0';
         s->node_id = get_node_id(node_name);
         s->vector_clock = *vector_clock_create();
-        nf_clock_dicttionary[s->node_id] = s;
+        nf_clock_dictionary[s->node_id].node_id = s->node_id;
+        nf_clock_dictionary[s->node_id].node_name = s->node_name;
+        nf_clock_dictionary[s->node_id].vector_clock= s->vector_clock;
     }
     return s;
 }
