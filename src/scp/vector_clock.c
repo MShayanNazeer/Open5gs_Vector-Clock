@@ -48,14 +48,14 @@ void vector_clock_update(const char *sender, const char *receiver) {
     receiver_clock->vector_clock.clocks[receiver_clock->node_id]++;    
 
     int i;
-    for (i = 0; i < MAX_NODES; i++) {
+    for (i = 0; i < NUM_NODES; i++) {
         if (sender_clock->vector_clock.clocks[i] < receiver_clock->vector_clock.clocks[i]) {
             sender_clock->vector_clock.clocks[i] = receiver_clock->vector_clock.clocks[i];
         }
     }
 
 
-    printf("Vector Clock for node %d:\n", sender_clock->node_name);
+    printf("Vector Clock for node %s:\n", sender_clock->node_name);
     int j;
     for (j = 0; j < NUM_NODES; j++) {
         printf("%d ", sender_clock->vector_clock.clocks[j]);
