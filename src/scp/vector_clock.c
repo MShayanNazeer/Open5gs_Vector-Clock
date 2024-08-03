@@ -33,9 +33,11 @@ node_clock_map_t *get_node_clock(const char *node_name) {
         s->node_name[sizeof(s->node_name) - 1] = '\0';
         s->node_id = get_node_id(node_name);
         s->vector_clock = *vector_clock_create();
-        nf_clock_dictionary[s->node_id].node_id = s->node_id;
-        nf_clock_dictionary[s->node_id].node_name = s->node_name;
-        nf_clock_dictionary[s->node_id].vector_clock= s->vector_clock;
+        
+        nf_clock_dictionary[s->node_id].node_id = get_node_id(node_name); 
+        nf_clock_dictionary[s->node_id].node_name = node_name;
+        // nf_clock_dictionary[s->node_id].vector_clock= s->vector_clock;
+        memcpy(nf_clock_dictionary[s->node_id].vector_clock, s->vector_clock, sizeof(s->vector_clock));
     }
     return s;
 }
