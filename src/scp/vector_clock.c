@@ -13,7 +13,7 @@ static int get_node_id(const char *node_name) {
     return 0; // Return 0 if the node name is unknown
 }
 
-vector_clock_t *vector_clock_create() {
+vector_clock_t *vector_clock_create(void) {
     vector_clock_t *vc = (vector_clock_t *)malloc(sizeof(vector_clock_t));
     memset(vc->clocks, 0, sizeof(vc->clocks));
     return vc;
@@ -25,14 +25,12 @@ void vector_clock_destroy(vector_clock_t *vc) {
 
 node_clock_map_t *get_node_clock(const char *node_name) {
     node_clock_map_t *s;
-    if (s == NULL) {
-        s = (node_clock_map_t *)malloc(sizeof(node_clock_map_t));
-        strncpy(s->node_name, node_name, sizeof(s->node_name) - 1);
-        s->node_name[sizeof(s->node_name) - 1] = '\0';
-        s->node_id = get_node_id(node_name);
-        s->vector_clock = *vector_clock_create();
+    s = (node_clock_map_t *)malloc(sizeof(node_clock_map_t));
+    strncpy(s->node_name, node_name, sizeof(s->node_name) - 1);
+    s->node_name[sizeof(s->node_name) - 1] = '\0';
+    s->node_id = get_node_id(node_name);
+    s->vector_clock = *vector_clock_create();
         
-    }
     return s;
 }
 
