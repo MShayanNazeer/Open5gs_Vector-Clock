@@ -28,7 +28,6 @@ void vector_clock_destroy(vector_clock_t *vc) {
 
 node_clock_map_t *get_node_clock(const char *node_name) {
     node_clock_map_t *s;
-    HASH_FIND_STR(node_clock_map, node_name, s);
     if (s == NULL) {
         s = (node_clock_map_t *)malloc(sizeof(node_clock_map_t));
         strncpy(s->node_name, node_name, sizeof(s->node_name) - 1);
