@@ -42,7 +42,8 @@ node_clock_map_t *get_node_clock(const char *node_name) {
         int i;
         for (i = 0; i < NUM_NODES; i++)
         {
-            nf_clock_dictionary[get_node_id(node_name)].vector_clock[i] = s->vector_clock[i]; 
+            temp = nf_clock_dictionary[s->node_id].vector_clock;
+            temp[i] = s->vector_clock[i]; 
         }
         
     }
