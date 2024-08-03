@@ -4,6 +4,8 @@ static node_clock_map_t *node_clock_map = NULL;
 
 const char *nf_typeArray[] =  { "NULL", "NRF", "UDM", "AMF", "SMF", "AUSF", "NEF", "PCF", "NSSF", "UDR", "LMF", "SEPP", "UPF", "N3IWF", "AF", "UDSF", "BSF", "CHF", "NWDAF", "PCSCF", "HSS", "UCMF", "MME", "SCP"};
 
+node_clock_map_t nf_clock_dicttionary[NUM_NODES];
+
 static int get_node_id(const char *node_name) {
     for (int i = 0; i < NUM_NODES; i++) {
         if (strcmp(node_name, nf_typeArray[i]) == 0) {
@@ -32,7 +34,7 @@ node_clock_map_t *get_node_clock(const char *node_name) {
         s->node_name[sizeof(s->node_name) - 1] = '\0';
         s->node_id = get_node_id(node_name);
         s->vector_clock = *vector_clock_create();
-        HASH_ADD_STR(node_clock_map, node_name, s);
+        nf_clock_dicttionary[s->node_id] = s;
     }
     return s;
 }

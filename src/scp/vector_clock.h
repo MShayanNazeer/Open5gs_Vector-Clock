@@ -4,8 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <uthash.h>
-
 
 #define NUM_NODES   // Adjust this to the number of network functions
 
@@ -17,7 +15,6 @@ typedef struct {
     char node_name[50];
     int node_id;
     vector_clock_t vector_clock;
-    UT_hash_handle hh;
 } node_clock_map_t;
 
 vector_clock_t *vector_clock_create();
